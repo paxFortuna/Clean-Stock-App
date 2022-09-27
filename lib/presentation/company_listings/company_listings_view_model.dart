@@ -13,7 +13,7 @@ class CompanyListingsViewModel with ChangeNotifier {
   CompanyListingsState get state => _state;
 
   // debounce .사용후 지워져야 하기에 널러벌 해야 함
-  //Timer? _debounce;
+  Timer? _debounce;
 
   CompanyListingsViewModel(this._repository) {
     _getCompanyListings();
@@ -22,13 +22,13 @@ class CompanyListingsViewModel with ChangeNotifier {
   void onAction(CompanyListingsAction action) {
     action.when(refresh: () => _getCompanyListings(fetchFromRemote: true),
     onSearchQueryChange: (query){
-      //if(_debounce?.isActive ?? false){
-      //  _debounce?.cancel();
-      //} else {
-      //  _debounce = Timer(const Duration(milliseconds: 500), (){
+      if(_debounce?.isActive ?? false){
+        _debounce?.cancel();
+      } else {
+        _debounce = Timer(const Duration(milliseconds: 500), (){
           _getCompanyListings(query: query);
-     //   });
-     // }
+        });
+      }
     },);
   }
 
