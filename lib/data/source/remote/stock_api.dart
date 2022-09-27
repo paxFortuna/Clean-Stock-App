@@ -25,4 +25,14 @@ class StockApi {
   }
 
 //  https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo
+
+  Future<http.Response> getIntradayInfo({
+    required String symbol,
+    String apiKey = apiKey,
+  }) async {
+    return await client.get(Uri.parse(
+        '$baseUrl/query?function=TIME_SERIES_INTRADAY&symbol=$symbol&interval=60min&apikey=$apiKey&datatype=csv'));
+
+// TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo&datatype=csv
+  }
 }

@@ -1,7 +1,9 @@
 import 'package:clean_stock_app/data/source/local/company_listing_entity.dart';
+import 'package:clean_stock_app/domain/repository/stock_repository.dart';
 import 'package:clean_stock_app/presentation/company_listings/company_listings_screen.dart';
 import 'package:clean_stock_app/presentation/company_listings/company_listings_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import 'data/repository/stock_repository_impl.dart';
@@ -15,14 +17,22 @@ void main() async {
   // hive_generator build_runner 실행 이후 설정
   Hive.registerAdapter(CompanyListingEntityAdapter());
 
+  final repository = StockRepositoryImpl(
+    StockApi(),
+    StockDao(),
+  );
+
+  GetIt.instance.registerSingleton<StockRepository>(repository);
+
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(
         create: (_) => CompanyListingsViewModel(
-          StockRepositoryImpl(
-            StockApi(),
-            StockDao(),
-          ),
+          repository,
+          // StockRepositoryImpl(
+          //   StockApi(),
+          //   StockDao(),
+          // ),
         ),
       ),
     ], child: const MyApp()),
