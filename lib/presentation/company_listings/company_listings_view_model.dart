@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:clean_stock_app/presentation/company_listings/company_listings_action.dart';
 import 'package:clean_stock_app/presentation/company_listings/company_listings_state.dart';
 import 'package:flutter/foundation.dart';
 
@@ -9,8 +12,24 @@ class CompanyListingsViewModel with ChangeNotifier {
   var _state = const CompanyListingsState(); // 상태 변수이기에 final은 안됨
   CompanyListingsState get state => _state;
 
+  // debounce .사용후 지워져야 하기에 널러벌 해야 함
+  //Timer? _debounce;
+
   CompanyListingsViewModel(this._repository) {
     _getCompanyListings();
+  }
+
+  void onAction(CompanyListingsAction action) {
+    action.when(refresh: () => _getCompanyListings(fetchFromRemote: true),
+    onSearchQueryChange: (query){
+      //if(_debounce?.isActive ?? false){
+      //  _debounce?.cancel();
+      //} else {
+      //  _debounce = Timer(const Duration(milliseconds: 500), (){
+          _getCompanyListings(query: query);
+     //   });
+     // }
+    },);
   }
 
   // ui에서 veiwModel이 호출되면 아래 메서드를 호출하여 데이터 읽어옴.
@@ -36,7 +55,6 @@ class CompanyListingsViewModel with ChangeNotifier {
         print('리모트 에러: ' + e.toString());
       },
     );
-    notifyListeners();
 
     _state = state.copyWith(
       isLoading: false,
