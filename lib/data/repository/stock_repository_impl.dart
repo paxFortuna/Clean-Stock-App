@@ -35,7 +35,10 @@ class StockRepositoryImpl implements StockRepository {
       final response = await _api.getListings();
       final remoteListings = await _parser.parse(response.body);
 
-      // 캐싱 - entity로 변환해서 hive db에 저장
+      // 캐시 비우기
+      await _dao.clearComapnyListings();
+
+      // 캐싱 추가 - entity로 변환해서 hive db에 저장
       await _dao.insertCompanyListings(
           remoteListings.map((e) => e.toCompanyListingEntity()).toList()
       );
