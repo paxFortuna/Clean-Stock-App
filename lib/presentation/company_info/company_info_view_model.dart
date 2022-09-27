@@ -18,7 +18,7 @@ class CompanyInfoViewModel with ChangeNotifier {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
-    //실재 데이터 가져오는 기능
+    //실재 데이터 가져오는 기능 when은 freezed 내장함수
     final result = await _repository.getCompanyInfo(symbol);
     result.when(
         success: (info) {
