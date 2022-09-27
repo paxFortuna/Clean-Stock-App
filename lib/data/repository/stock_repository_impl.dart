@@ -16,8 +16,8 @@ class StockRepositoryImpl implements StockRepository {
   StockRepositoryImpl(this._api, this._dao);
 
   @override
-  Future<Result<List<CompanyListing>>> getCompanyListings(bool fetchFromRemote,
-      String query) async {
+  Future<Result<List<CompanyListing>>> getCompanyListings(
+      bool fetchFromRemote, String query) async {
     // 캐시 dao에서 찾는다. 있다면 ...Entity에서 가져오고, 없다면 리모트에서
     final localListings = await _dao.searchCompanyListing(query);
 
@@ -28,8 +28,7 @@ class StockRepositoryImpl implements StockRepository {
     // 캐시
     if (shouldJustLoadFromCache) {
       return Result.success(
-          localListings.map((e) => e.toCompanyListing()).toList()
-      );
+          localListings.map((e) => e.toCompanyListing()).toList());
     }
     // 리모트
     // Future<http.Response> getListings({String apiKey = apiKey}) 설정
@@ -42,21 +41,22 @@ class StockRepositoryImpl implements StockRepository {
 
       // 캐싱 추가 - entity로 변환해서 hive db에 저장
       await _dao.insertCompanyListings(
-          remoteListings.map((e) => e.toCompanyListingEntity()).toList()
-      );
+          remoteListings.map((e) => e.toCompanyListingEntity()).toList());
 
       return Result.success(remoteListings);
-
-    } catch(e) {
+    } catch (e) {
       return Result.error(Exception('데이터 로드 실패'));
     }
-
   }
 
   @override
-  Future<Result<CompanyInfo>> getCompanyInfo(String symbol) {
-    // TODO: implement getCompanyInfo
-    throw UnimplementedError();
+  Future<Result<CompanyInfo>> getCompanyInfo(String symbol) async {
+    try {
+      final dto = await _api.getCompanyInfo(symbol: symbol);
+      //dto와 CompanyInfo 변환은 Mapper에 추가해야 함
+      return Result.success(dto.toCompanyInfo());
+    } catch (e) {
+      return Result.error(Exception('회사 정보 로드 실패!! : ${e.toString()}'));
+    }
   }
-
 }
