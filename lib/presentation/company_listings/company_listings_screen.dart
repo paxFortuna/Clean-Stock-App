@@ -7,7 +7,6 @@ class CompanyListingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final viewModel = context.watch<CompanyListingsViewModel>();
     final state = viewModel.state;
 
@@ -34,28 +33,31 @@ class CompanyListingsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   ),
                   labelText: '검색...',
-                  labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                  labelStyle:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
             ),
-            Expanded(child: RefreshIndicator(
-              onRefresh: () async {
-
-              },
-              child: ListView.builder(
-                  itemCount: 1,
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {},
+                child: ListView.builder(
+                  itemCount: state.companies.length,
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
                         ListTile(
-                          title: Text(state.companies[index].name)
+                          title: Text(state.companies[index].name),
                         ),
-                        Divider(color: Theme.of(context).colorScheme.secondary),
+                        Divider(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                       ],
                     );
                   },
+                ),
               ),
-            ),)
+            )
           ],
         ),
       ),

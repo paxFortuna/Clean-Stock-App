@@ -8,8 +8,8 @@ void main () {
 
     final _parser = CompanyListingsParser();
     final remoteListings = await _parser.parse(response.body);
-    expect(remoteListings[0].symbol, 'AGM-P-E');
-    expect(remoteListings[0].name, '');
+    expect(remoteListings[0].symbol, 'A');
+    expect(remoteListings[0].name, 'Agilent Technologies Inc');
     expect(remoteListings[0].exchange, 'NYSE');
 
   });

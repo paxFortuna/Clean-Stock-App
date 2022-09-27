@@ -8,6 +8,7 @@ class CompanyListingsParser implements CsvParser<CompanyListing> {
   Future<List<CompanyListing>> parse(String csvString) async {
     List<List<dynamic>> csvValues =
         const CsvToListConverter().convert(csvString);
+
     csvValues.removeAt(0); // 컬럼명 row 제거
 
     return csvValues.map((e) {
@@ -20,7 +21,7 @@ class CompanyListingsParser implements CsvParser<CompanyListing> {
         exchange: exchange,
       );
     }).where((e) =>
-    !e.symbol.isNotEmpty || !e.name.isNotEmpty || !e.exchange.isNotEmpty)
+    e.symbol.isNotEmpty || e.name.isNotEmpty || e.exchange.isNotEmpty)
         .toList();
   }
 }
