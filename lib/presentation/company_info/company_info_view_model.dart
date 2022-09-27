@@ -10,7 +10,9 @@ class CompanyInfoViewModel with ChangeNotifier {
 
   CompanyInfoState get state => _state;
 
-  CompanyInfoViewModel(this._repository);
+  CompanyInfoViewModel(this._repository, String symbol) {
+    loadCompanyInfo(symbol);
+  }
 
   Future<void> loadCompanyInfo(String symbol) async {
     _state = state.copyWith(isLoading: true);
