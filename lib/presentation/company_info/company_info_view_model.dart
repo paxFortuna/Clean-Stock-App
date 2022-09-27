@@ -23,12 +23,14 @@ class CompanyInfoViewModel with ChangeNotifier {
           _state = state.copyWith(
             companyInfo: info,
             isLoading: false,
+            errorMessage: null,
           );
         },
         error: (e){
           _state = state.copyWith(
             companyInfo: null,
             isLoading: false,
+            errorMessage: e.toString(),
           );
         });
 
