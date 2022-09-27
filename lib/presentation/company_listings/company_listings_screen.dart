@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:clean_stock_app/presentation/company_listings/company_listings_action.dart';
 import 'package:clean_stock_app/presentation/company_listings/company_listings_view_model.dart';
 import 'package:flutter/material.dart';

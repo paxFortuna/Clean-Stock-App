@@ -1,5 +1,6 @@
 import 'package:clean_stock_app/data/csv/company_listing_parser.dart';
 import 'package:clean_stock_app/data/mapper/company_mapper.dart';
+import 'package:clean_stock_app/domain/model/company_info.dart';
 import 'package:clean_stock_app/domain/model/company_listing.dart';
 import 'package:clean_stock_app/domain/repository/stock_repository.dart';
 import 'package:clean_stock_app/util/result.dart';
@@ -50,6 +51,12 @@ class StockRepositoryImpl implements StockRepository {
       return Result.error(Exception('데이터 로드 실패'));
     }
 
+  }
+
+  @override
+  Future<Result<CompanyInfo>> getCompanyInfo(String symbol) {
+    // TODO: implement getCompanyInfo
+    throw UnimplementedError();
   }
 
 }

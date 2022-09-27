@@ -50,7 +50,7 @@ class CompanyListingsViewModel with ChangeNotifier {
       },
       error: (e) {
         //todo: 에러처리
-        print('리모트 에러: ' + e.toString());
+        print('리모트 에러: $e');
       },
     );
 

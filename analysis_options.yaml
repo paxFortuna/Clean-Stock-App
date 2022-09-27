@@ -30,7 +30,7 @@ linter:
 
 analyzer:
   exclude:
-    - "**/*.g.dart"
-    - "**/*.freezed.dart"
+    - lib/**.g.dart
+    - lib/**.freezed.dart
   errors:
     invalid_annotation_target: ignore
