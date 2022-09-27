@@ -9,10 +9,10 @@ import '../../domain/repository/stock_repository.dart';
 class CompanyListingsViewModel with ChangeNotifier {
   final StockRepository _repository;
 
-  var _state = const CompanyListingsState(); // 상태 변수이기에 final은 안됨
+  var _state = const CompanyListingsState(); // 상태 변수 final은 안됨
   CompanyListingsState get state => _state;
 
-  // debounce .사용후 지워져야 하기에 널러벌 해야 함
+  // debounce는 사용후 지워져야 하기에 널러벌 해야 함
   Timer? _debounce;
 
   CompanyListingsViewModel(this._repository) {
@@ -21,15 +21,13 @@ class CompanyListingsViewModel with ChangeNotifier {
 
   void onAction(CompanyListingsAction action) {
     action.when(refresh: () => _getCompanyListings(fetchFromRemote: true),
-    onSearchQueryChange: (query){
-      if(_debounce?.isActive ?? false){
+    onSearchQueryChange: (query) {
         _debounce?.cancel();
-      } else {
         _debounce = Timer(const Duration(milliseconds: 500), (){
           _getCompanyListings(query: query);
         });
       }
-    },);
+    );
   }
 
   // ui에서 veiwModel이 호출되면 아래 메서드를 호출하여 데이터 읽어옴.
