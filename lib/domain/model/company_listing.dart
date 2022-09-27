@@ -14,3 +14,4 @@ abstract class CompanyListing with _$CompanyListing {
 
   factory CompanyListing.fromJson(Map<String, Object?> json) => _$CompanyListingFromJson(json);
 }
+
