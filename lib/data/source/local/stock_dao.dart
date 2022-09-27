@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 
 import 'company_listing_entity.dart';
 
+
 class StockDao {
   //키값은 상수로 정의해서 사용하면 실수를 줄일 수 있다.
   static const companyListing = 'companyListing';

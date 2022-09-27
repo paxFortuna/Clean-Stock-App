@@ -1,8 +1,13 @@
+import 'package:clean_stock_app/data/source/local/company_listing_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import 'util/color_schemes.dart';
 
 void main() {
+  // hive_generator build_runner 실행 이후 설정
+  Hive.registerAdapter(CompanyListingEntityAdapter());
+
   runApp(const MyApp());
 }
 
