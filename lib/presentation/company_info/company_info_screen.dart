@@ -1,8 +1,10 @@
 import 'package:clean_stock_app/presentation/company_info/company_info_view_model.dart';
+import 'package:clean_stock_app/presentation/company_info/components/stock_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/model/company_info.dart';
+import 'company_info_state.dart';
 
 class CompanyInfoScreen extends StatelessWidget {
   const CompanyInfoScreen({Key? key}) : super(key: key);
@@ -21,21 +23,21 @@ class CompanyInfoScreen extends StatelessWidget {
             if (state.isLoading)
               const Center(child: CircularProgressIndicator()),
             if (state.isLoading == false && state.errorMessage == null)
-              _buildBody(state.companyInfo!),
+              _buildBody(state),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBody(CompanyInfo companyInfo) {
+  Widget _buildBody(CompanyInfoState state) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            companyInfo.name,
+            state.companyInfo!.name,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -43,29 +45,38 @@ class CompanyInfoScreen extends StatelessWidget {
             ),
           ),
           Text(
-            companyInfo.symbol,
+            state.companyInfo!.symbol,
             style: const TextStyle(
               fontStyle: FontStyle.italic,
             ),
           ),
           const Divider(),
           Text(
-            'Industry: ${companyInfo.industry}',
+            'Industry: ${state.companyInfo!.industry}',
             style: const TextStyle(
               overflow: TextOverflow.ellipsis,
             ),
           ),
           Text(
-            'Country: ${companyInfo.country}',
+            'Country: ${state.companyInfo!.country}',
             style: const TextStyle(
               overflow: TextOverflow.ellipsis,
             ),
           ),
           const Divider(),
-          Text(companyInfo.description,
-            style: const TextStyle(
-              fontSize: 12),
+          Text(
+            state.companyInfo!.description,
+            style: const TextStyle(fontSize: 12),
           ),
+          const SizedBox(height: 16),
+          Text(
+            '주가그래프',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          if(state.stockInfos.isNotEmpty) StockChart(infos: state.stockInfos),
         ],
       ),
     );
