@@ -6,6 +6,7 @@ import 'package:clean_stock_app/domain/model/intraday_info.dart';
 import 'package:clean_stock_app/domain/repository/stock_repository.dart';
 import 'package:clean_stock_app/util/result.dart';
 
+import '../csv/intraday_info_parser.dart';
 import '../source/local/stock_dao.dart';
 import '../source/remote/stock_api.dart';
 
@@ -13,7 +14,7 @@ class StockRepositoryImpl implements StockRepository {
   final StockApi _api;
   final StockDao _dao;
   final _companyListingsParser = CompanyListingsParser();
-  final _intradayInfoParser = IntrdayInfoParser();
+  final _intradayInfoParser = IntradayInfoParser();
 
   StockRepositoryImpl(this._api, this._dao);
 
@@ -73,6 +74,4 @@ class StockRepositoryImpl implements StockRepository {
        return Result.error(Exception('intraday 정보 로드 실패!!! : ${e.toString()}'));
     }
   }
-
-  static IntrdayInfoParser() {}
 }
