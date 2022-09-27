@@ -23,6 +23,10 @@ class StockDao {
   Future<List<CompanyListingEntity>> searchCompanyListing(String query) async {
     final List<CompanyListingEntity> companyListing =
         box.get(StockDao.companyListing, defaultValue: []);
-    return companyListing;
+    return companyListing
+        .where((e) =>
+            e.name.toLowerCase().contains(query.toLowerCase()) ||
+            query.toUpperCase() == e.symbol)
+        .toList();
   }
 }
