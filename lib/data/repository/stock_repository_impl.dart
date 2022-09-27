@@ -12,7 +12,8 @@ import '../source/remote/stock_api.dart';
 class StockRepositoryImpl implements StockRepository {
   final StockApi _api;
   final StockDao _dao;
-  final _parser = CompanyListingsParser();
+  final _companyListingsParser = CompanyListingsParser();
+  final _intradayInfoParser = IntrdayInfoParser();
 
   StockRepositoryImpl(this._api, this._dao);
 
@@ -35,7 +36,7 @@ class StockRepositoryImpl implements StockRepository {
     // Future<http.Response> getListings({String apiKey = apiKey}) 설정
     try {
       final response = await _api.getListings();
-      final remoteListings = await _parser.parse(response.body);
+      final remoteListings = await _companyListingsParser.parse(response.body);
 
       // 캐시 비우기
       await _dao.clearComapnyListings();
@@ -62,8 +63,16 @@ class StockRepositoryImpl implements StockRepository {
   }
 
   @override
-  Future<Result<List<IntradayInfo>>> getIntradayInfo(String symbol) {
-    // TODO: implement getIntradayInfo
-    throw UnimplementedError();
+  Future<Result<List<IntradayInfo>>> getIntradayInfo(String symbol) async {
+    try{
+      final response = await _api.getIntradayInfo(symbol: symbol);
+      final results = await _intradayInfoParser.parse(response.body);
+      return Result.success(results);
+
+    }catch(e){
+       return Result.error(Exception('intraday 정보 로드 실패!!! : ${e.toString()}'));
+    }
   }
+
+  static IntrdayInfoParser() {}
 }
