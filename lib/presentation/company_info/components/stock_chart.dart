@@ -2,13 +2,16 @@ import 'dart:math';
 
 import 'package:clean_stock_app/domain/model/intraday_info.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
 class StockChart extends StatelessWidget {
   final List<IntradayInfo> infos;
+  final Color color;
 
   const StockChart({
     Key? key,
     this.infos = const [],
+    required this.color,
   }) : super(key: key);
 
   @override
@@ -17,7 +20,7 @@ class StockChart extends StatelessWidget {
       width: double.infinity,
       height: 250,
       child: CustomPaint(
-        painter: ChartPainter(infos),
+        painter: ChartPainter(infos, color),
       ),
     );
   }
@@ -25,6 +28,7 @@ class StockChart extends StatelessWidget {
 
 class ChartPainter extends CustomPainter {
   final List<IntradayInfo> infos;
+  final Color color;
 
   late int upperValue =
      infos.map((e) => e.close)
@@ -34,9 +38,18 @@ class ChartPainter extends CustomPainter {
      infos.map((e) => e.close)
          .reduce(min).toInt();
 
-  final spacing = 50;
+  final spacing = 50.0;
 
-  ChartPainter(this.infos);
+  // 생성자에 넣어두고 계속 사용하는 것이 성능에 유리함
+  late Paint strokePaint;
+
+  ChartPainter(this.infos, this.color){
+    strokePaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2
+      ..strokeCap = StrokeCap.round;
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -93,9 +106,33 @@ class ChartPainter extends CustomPainter {
       lastX = (x1 + x2) / 2.0;
       strokePath.quadraticBezierTo(x1, y1, lastX, (y1 + y2) / 2.0);
     }
+   // graph 그라데이션
+    final fillPath = Path.from(strokePath)
+      ..lineTo(lastX, size.height - spacing)
+      ..lineTo(spacing, size.height - spacing)
+      ..close();
+
+    final fillPaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill
+      ..shader = ui.Gradient.linear(
+          Offset.zero,
+          Offset(0, size.height -spacing),
+          [
+            color.withOpacity(0.5),
+            Colors.transparent,
+          ]);
 
     // graph 차트 그리기
-    final strokePaint = Paint();
+    canvas.drawPath(fillPath, fillPaint);
+    canvas.drawPath(strokePath, strokePaint);
+
+    // 아래 함수는 생성자에 넣어서 사용한다.
+    // final strokePaint = Paint()
+    //   ..color = color
+    //   ..style = PaintingStyle.stroke
+    //   ..strokeWidth = 3
+    //   ..strokeCap = StrokeCap.round;
 
 
   }

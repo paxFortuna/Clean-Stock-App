@@ -22,14 +22,14 @@ class CompanyInfoScreen extends StatelessWidget {
             if (state.isLoading)
               const Center(child: CircularProgressIndicator()),
             if (state.isLoading == false && state.errorMessage == null)
-              SingleChildScrollView(child: _buildBody(state)),
+              SingleChildScrollView(child: _buildBody(context, state)),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBody(CompanyInfoState state) {
+  Widget _buildBody(BuildContext context, CompanyInfoState state) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -75,7 +75,14 @@ class CompanyInfoScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          if(state.stockInfos.isNotEmpty) StockChart(infos: state.stockInfos),
+          if (state.stockInfos.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: StockChart(
+                infos: state.stockInfos,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
         ],
       ),
     );
