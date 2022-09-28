@@ -3,7 +3,6 @@ import 'package:clean_stock_app/presentation/company_info/components/stock_chart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/model/company_info.dart';
 import 'company_info_state.dart';
 
 class CompanyInfoScreen extends StatelessWidget {
