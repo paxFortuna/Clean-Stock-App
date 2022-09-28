@@ -50,7 +50,7 @@ class ChartPainter extends CustomPainter {
     strokePaint = Paint()
       ..color = graphColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
+      ..strokeWidth = 1
       ..strokeCap = StrokeCap.round;
   }
 
