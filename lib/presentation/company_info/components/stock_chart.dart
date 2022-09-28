@@ -6,12 +6,14 @@ import 'dart:ui' as ui;
 
 class StockChart extends StatelessWidget {
   final List<IntradayInfo> infos;
-  final Color color;
+  final Color graphColor;
+  final Color textColor;
 
   const StockChart({
     Key? key,
     this.infos = const [],
-    required this.color,
+    required this.graphColor,
+    required this.textColor,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class StockChart extends StatelessWidget {
       width: double.infinity,
       height: 250,
       child: CustomPaint(
-        painter: ChartPainter(infos, color),
+        painter: ChartPainter(infos, graphColor, textColor),
       ),
     );
   }
@@ -28,7 +30,8 @@ class StockChart extends StatelessWidget {
 
 class ChartPainter extends CustomPainter {
   final List<IntradayInfo> infos;
-  final Color color;
+  final Color graphColor;
+  final Color textColor;
 
   late int upperValue =
      infos.map((e) => e.close)
@@ -43,9 +46,9 @@ class ChartPainter extends CustomPainter {
   // 생성자에 넣어두고 계속 사용하는 것이 성능에 유리함
   late Paint strokePaint;
 
-  ChartPainter(this.infos, this.color){
+  ChartPainter(this.infos, this.graphColor, this.textColor){
     strokePaint = Paint()
-      ..color = color
+      ..color = graphColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2
       ..strokeCap = StrokeCap.round;
@@ -60,7 +63,7 @@ class ChartPainter extends CustomPainter {
       final tp = TextPainter(
         text: TextSpan(
           text: '${(lowerValue + priceStep * i).round()}',
-          style: const TextStyle(fontSize: 12),
+          style: TextStyle(fontSize: 12, color: textColor),
         ),
         textAlign: TextAlign.start,
         textDirection: TextDirection.ltr,
@@ -69,20 +72,20 @@ class ChartPainter extends CustomPainter {
       tp.paint(canvas, Offset(10, size.height - spacing - i * (size.height / 5.0)));
     }
     // 가로 텍스트
-    final spacePerHour = size.width / infos.length;
+    final spacePerHour = (size.width - spacing) / infos.length;
     for(var i = 0; i < infos.length; i += 12) {
       final hour = infos[i].date.hour;
 
       final tp = TextPainter(
         text: TextSpan(
           text: '$hour',
-          style: const TextStyle(fontSize: 12),
+          style: TextStyle(fontSize: 12, color: textColor),
         ),
         textAlign: TextAlign.start,
         textDirection: TextDirection.ltr,
       );
       tp.layout();
-      tp.paint(canvas, Offset(i * spacePerHour + spacing, size.height -5));
+      tp.paint(canvas, Offset(i * spacePerHour + spacing, size.height + 20));
     }
     // graph 차트 그리기 위치 정보 계산
     var lastX = 0.0;
@@ -96,9 +99,9 @@ class ChartPainter extends CustomPainter {
       final rightRatio = (nextInfo.close - lowerValue) / (upperValue - leftRatio);
 
       final x1 = spacing + i * spacePerHour;
-      final y1 = size.height - spacing - (leftRatio * size.height).toDouble();
+      final y1 = size.height - (leftRatio * size.height).toDouble();
       final x2 = spacing + (i + 1) * spacePerHour;
-      final y2 = size.height - spacing - (rightRatio * size.height).toDouble();
+      final y2 = size.height - (rightRatio * size.height).toDouble();
 
       if (i == 0) {
         strokePath.moveTo(x1, y2);
@@ -113,13 +116,13 @@ class ChartPainter extends CustomPainter {
       ..close();
 
     final fillPaint = Paint()
-      ..color = color
+      ..color = graphColor
       ..style = PaintingStyle.fill
       ..shader = ui.Gradient.linear(
           Offset.zero,
           Offset(0, size.height -spacing),
           [
-            color.withOpacity(0.5),
+            graphColor.withOpacity(0.5),
             Colors.transparent,
           ]);
 
