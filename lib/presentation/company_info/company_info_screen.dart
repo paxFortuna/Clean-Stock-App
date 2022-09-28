@@ -68,7 +68,7 @@ class CompanyInfoScreen extends StatelessWidget {
             style: const TextStyle(fontSize: 12),
           ),
           const SizedBox(height: 16),
-          Text(
+          const Text(
             '주가그래프',
             style: TextStyle(
               fontWeight: FontWeight.bold,

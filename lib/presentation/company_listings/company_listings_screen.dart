@@ -1,6 +1,5 @@
 import 'package:clean_stock_app/domain/repository/stock_repository.dart';
 import 'package:clean_stock_app/presentation/company_info/company_info_screen.dart';
-import 'package:clean_stock_app/presentation/company_info/company_info_state.dart';
 import 'package:clean_stock_app/presentation/company_info/company_info_view_model.dart';
 import 'package:clean_stock_app/presentation/company_listings/company_listings_action.dart';
 import 'package:clean_stock_app/presentation/company_listings/company_listings_view_model.dart';

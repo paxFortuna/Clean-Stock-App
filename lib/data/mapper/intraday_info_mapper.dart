@@ -7,7 +7,7 @@ extension ToIntradayInfo on IntradayInfoDto {
     // 2022-09-26  5:50:00
     final formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
     return IntradayInfo(
-      data: formatter.parse(timestamp),
+      date: formatter.parse(timestamp),
       close: close,
     );
   }

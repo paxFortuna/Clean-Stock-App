@@ -7,7 +7,7 @@ part 'intraday_info.g.dart';
 @freezed
 class IntradayInfo with _$IntradayInfo {
   const factory IntradayInfo({
-    required DateTime data,
+    required DateTime date,
     required double close,
   }) = _IntradayInfo;
 
