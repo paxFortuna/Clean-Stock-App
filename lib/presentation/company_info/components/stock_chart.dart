@@ -104,7 +104,7 @@ class ChartPainter extends CustomPainter {
       final y2 = size.height - (rightRatio * size.height).toDouble();
 
       if (i == 0) {
-        strokePath.moveTo(x1, y2);
+        strokePath.moveTo(x1, y1);
       }
       lastX = (x1 + x2) / 2.0;
       strokePath.quadraticBezierTo(x1, y1, lastX, (y1 + y2) / 2.0);
