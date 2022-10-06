@@ -35,7 +35,7 @@ class ChartPainter extends CustomPainter {
 
   late int upperValue =
      infos.map((e) => e.close)
-         .fold<double>(0.0, max).ceil();
+         .fold<double>(0, max).ceil();
 
   late int lowerValue =
      infos.map((e) => e.close)

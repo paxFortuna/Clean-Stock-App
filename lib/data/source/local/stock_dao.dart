@@ -19,7 +19,7 @@ class StockDao {
   // 클리어
   Future clearComapnyListings() async {
     final box = await Hive.openBox<CompanyListingEntity>('stock.db');
-    await box.close();
+    await box.clear();
   }
 
   // 검색
