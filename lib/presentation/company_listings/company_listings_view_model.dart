@@ -20,14 +20,15 @@ class CompanyListingsViewModel with ChangeNotifier {
   }
 
   void onAction(CompanyListingsAction action) {
-    action.when(refresh: () => _getCompanyListings(fetchFromRemote: true),
-    onSearchQueryChange: (query) {
-        _debounce?.cancel();
-        _debounce = Timer(const Duration(milliseconds: 500), (){
-          _getCompanyListings(query: query);
+    action.when(
+        refresh: () => _getCompanyListings(fetchFromRemote: true),
+        onSearchQueryChange: (query) {
+          // TextField가 널이면 디바운스 실행 안함
+          _debounce?.cancel();
+          _debounce = Timer(const Duration(milliseconds: 500), () {
+            _getCompanyListings(query: query);
+          });
         });
-      }
-    );
   }
 
   // ui에서 veiwModel이 호출되면 아래 메서드를 호출하여 데이터 읽어옴.

@@ -35,7 +35,7 @@ class ChartPainter extends CustomPainter {
 
   late int upperValue =
      infos.map((e) => e.close)
-         .fold<double>(0, max).ceil();
+         .fold<double>(0.0, max).ceil();
 
   late int lowerValue =
      infos.map((e) => e.close)
@@ -96,7 +96,7 @@ class ChartPainter extends CustomPainter {
       if (i + 1 > infos.length - 1) nextIndex = infos.length - 1;
       final nextInfo = infos[nextIndex];
       final leftRatio = (info.close - lowerValue) / (upperValue - lowerValue);
-      final rightRatio = (nextInfo.close - lowerValue) / (upperValue - leftRatio);
+      final rightRatio = (nextInfo.close - lowerValue) / (upperValue - lowerValue);
 
       final x1 = spacing + i * spacePerHour;
       final y1 = size.height - (leftRatio * size.height).toDouble();

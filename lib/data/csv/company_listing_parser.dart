@@ -4,6 +4,7 @@ import 'package:csv/csv.dart';
 
 // 인터페이스 구현 기능
 class CompanyListingsParser implements CsvParser<CompanyListing> {
+
   @override
   Future<List<CompanyListing>> parse(String csvString) async {
     List<List<dynamic>> csvValues =
@@ -21,7 +22,7 @@ class CompanyListingsParser implements CsvParser<CompanyListing> {
         exchange: exchange,
       );
     }).where((e) =>
-    e.symbol.isNotEmpty || e.name.isNotEmpty || e.exchange.isNotEmpty)
+    e.symbol.isNotEmpty && e.name.isNotEmpty && e.exchange.isNotEmpty)
         .toList();
   }
 }

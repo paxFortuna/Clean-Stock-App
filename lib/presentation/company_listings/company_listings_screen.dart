@@ -23,6 +23,7 @@ class CompanyListingsScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: TextField(
                 onChanged: (query) {
+                  // viewModel의 onAction 호출
                   viewModel.onAction(
                       CompanyListingsAction.onSearchQueryChange(query));
                 },
@@ -50,7 +51,9 @@ class CompanyListingsScreen extends StatelessWidget {
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {
-                  viewModel.onAction(const CompanyListingsAction.refresh());
+                  viewModel.onAction(
+                    const CompanyListingsAction.refresh(),
+                  );
                 },
                 child: ListView.builder(
                   itemCount: state.companies.length,
@@ -66,7 +69,7 @@ class CompanyListingsScreen extends StatelessWidget {
                               MaterialPageRoute(builder: (context) {
                                 final repository =
                                     GetIt.instance<StockRepository>();
-                                    // context.read<StockRepository>();
+                                // context.read<StockRepository>();
                                 final symbol = state.companies[index].symbol;
                                 return ChangeNotifierProvider(
                                   create: (_) =>
